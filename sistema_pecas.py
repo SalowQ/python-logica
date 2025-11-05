@@ -12,8 +12,9 @@ def exibir_menu():
     print("="*60)
     print("1. Adicionar peça")
     print("2. Listar peças")
-    print("3. Gerar relatório")
-    print("4. Sair")
+    print("3. Remover peça")
+    print("4. Gerar relatório")
+    print("5. Sair")
     print("="*60)
 
 def main():
@@ -37,12 +38,14 @@ def main():
         elif opcao == "2":
             listar_pecas(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual)
         elif opcao == "3":
-            gerar_relatorio(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual)
+            remover_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechadas)
         elif opcao == "4":
+            gerar_relatorio(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual)
+        elif opcao == "5":
             print("\nSaindo do sistema. Até logo!")
             break
         else:
-            print("\n✗ Opção inválida! Por favor, escolha uma opção entre 1 e 4.")
+            print("\n✗ Opção inválida! Por favor, escolha uma opção entre 1 e 5.")
 
 def adicionar_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechadas):
     """
@@ -159,6 +162,50 @@ def listar_pecas(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual
             print(f"  Motivo(s): {peca['motivo_reprovacao']}")
     
     print("\n" + "="*60)
+
+
+def remover_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechadas):
+    """
+    Remove uma peça do sistema pelo ID.
+    """
+    print("\n=== REMOVER PEÇA ===")
+    
+    id_peca = input("ID da peça a ser removida: ").strip()
+    
+    peca_encontrada = None
+    peca_aprovada = False
+    
+    for peca in pecas_aprovadas:
+        if peca['id'] == id_peca:
+            peca_encontrada = peca
+            peca_aprovada = True
+            break
+    
+    if not peca_encontrada:
+        for peca in pecas_reprovadas:
+            if peca['id'] == id_peca:
+                peca_encontrada = peca
+                break
+    
+    if not peca_encontrada:
+        print(f"\n✗ Peça com ID {id_peca} não encontrada no sistema.")
+        return
+    
+    if peca_aprovada:
+        pecas_aprovadas.remove(peca_encontrada)
+        
+        if peca_encontrada in caixa_atual:
+            caixa_atual.remove(peca_encontrada)
+        else:
+            for caixa in caixas_fechadas:
+                if peca_encontrada in caixa:
+                    caixa.remove(peca_encontrada)
+                    break
+        
+        print(f"\n✓ Peça {id_peca} (APROVADA) removida com sucesso.")
+    else:
+        pecas_reprovadas.remove(peca_encontrada)
+        print(f"\n✓ Peça {id_peca} (REPROVADA) removida com sucesso.")
 
 
 def gerar_relatorio(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual):
