@@ -57,7 +57,7 @@ def adicionar_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechad
         cor = input("Cor: ").strip()
         comprimento = float(input("Comprimento (em cm): "))
         
-        aprovada, motivo = validar_peca(peso, cor, comprimento)
+        aprovada, motivo = validar_peca(id_peca, peso, cor, comprimento, pecas_aprovadas, pecas_reprovadas)
         
         peca = {
             'id': id_peca,
@@ -86,9 +86,10 @@ def adicionar_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechad
     except Exception as e:
         print(f"\n✗ Erro ao processar peça: {e}")
 
-def validar_peca(peso, cor, comprimento):
+def validar_peca(id_peca, peso, cor, comprimento, pecas_aprovadas, pecas_reprovadas):
     """
     Valida uma peça de acordo com os critérios de qualidade:
+    - ID único (não pode estar duplicado)
     - Peso entre 95g e 105g
     - Cor azul ou verde
     - Comprimento entre 10cm e 20cm
@@ -96,6 +97,10 @@ def validar_peca(peso, cor, comprimento):
     Retorna: (aprovada: bool, motivo_reprovacao: str)
     """
     motivos = []
+    
+    ids_existentes = [peca['id'] for peca in pecas_aprovadas + pecas_reprovadas]
+    if id_peca in ids_existentes:
+        motivos.append("ID já existe no sistema")
     
     if peso < 95 or peso > 105:
         motivos.append("Peso fora da faixa permitida (95g-105g)")
