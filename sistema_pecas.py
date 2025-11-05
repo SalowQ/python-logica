@@ -34,7 +34,7 @@ def main():
         if opcao == "1":
             adicionar_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechadas)
         elif opcao == "2":
-            print("Gerando relatório...")
+            gerar_relatorio(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual)
         elif opcao == "3":
             print("\nSaindo do sistema. Até logo!")
             break
@@ -109,5 +109,35 @@ def validar_peca(peso, cor, comprimento):
     else:
         return True, ""
 
+def gerar_relatorio(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual):
+    """
+    Gera relatório consolidado com estatísticas do sistema.
+    """
+    print("\n" + "="*60)
+    print("RELATÓRIO CONSOLIDADO DE PRODUÇÃO")
+    print("="*60)
+    
+    total_aprovadas = len(pecas_aprovadas)
+    print(f"\n✓ Total de peças APROVADAS: {total_aprovadas}")
+    
+    total_reprovadas = len(pecas_reprovadas)
+    print(f"\n✗ Total de peças REPROVADAS: {total_reprovadas}")
+    
+    if total_reprovadas > 0:
+        print("\nMotivos de reprovação:")
+        for peca in pecas_reprovadas:
+            print(f"  - Peça {peca['id']}: {peca['motivo_reprovacao']}")
+    
+    caixas_completas = len(caixas_fechadas)
+    caixa_em_uso = 1 if len(caixa_atual) > 0 else 0
+    total_caixas = caixas_completas + caixa_em_uso
+    
+    print(f"\n📦 Quantidade de caixas utilizadas: {total_caixas}")
+    print(f"   - Caixas fechadas: {caixas_completas}")
+    if caixa_em_uso > 0:
+        print(f"   - Caixa atual em uso: {len(caixa_atual)}/10 peças")
+    
+    print("\n" + "="*60)
+    
 if __name__ == "__main__":
     main()
