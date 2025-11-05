@@ -14,7 +14,8 @@ def exibir_menu():
     print("2. Listar peças")
     print("3. Remover peça")
     print("4. Gerar relatório")
-    print("5. Sair")
+    print("5. Listar caixas fechadas")
+    print("6. Sair")
     print("="*60)
 
 def main():
@@ -42,10 +43,12 @@ def main():
         elif opcao == "4":
             gerar_relatorio(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual)
         elif opcao == "5":
+            listar_caixas_fechadas(caixas_fechadas)
+        elif opcao == "6":
             print("\nSaindo do sistema. Até logo!")
             break
         else:
-            print("\n✗ Opção inválida! Por favor, escolha uma opção entre 1 e 5.")
+            print("\n✗ Opção inválida! Por favor, escolha uma opção entre 1 e 6.")
 
 def adicionar_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechadas):
     """
@@ -163,7 +166,6 @@ def listar_pecas(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual
     
     print("\n" + "="*60)
 
-
 def remover_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechadas):
     """
     Remove uma peça do sistema pelo ID.
@@ -207,6 +209,25 @@ def remover_peca(pecas_aprovadas, pecas_reprovadas, caixa_atual, caixas_fechadas
         pecas_reprovadas.remove(peca_encontrada)
         print(f"\n✓ Peça {id_peca} (REPROVADA) removida com sucesso.")
 
+def listar_caixas_fechadas(caixas_fechadas):
+    """
+    Lista todas as caixas fechadas com suas peças.
+    """
+    print("\n" + "="*60)
+    print("LISTAGEM DE CAIXAS FECHADAS")
+    print("="*60)
+    
+    if len(caixas_fechadas) == 0:
+        print("\nNenhuma caixa fechada ainda.")
+    else:
+        numero_caixa = 1
+        for caixa in caixas_fechadas:
+            print(f"\n📦 Caixa {numero_caixa} (fechada) - {len(caixa)} peças:")
+            for peca in caixa:
+                print(f"  ID: {peca['id']} | Peso: {peca['peso']}g | Cor: {peca['cor']} | Comprimento: {peca['comprimento']}cm")
+            numero_caixa += 1
+    
+    print("\n" + "="*60)
 
 def gerar_relatorio(pecas_aprovadas, pecas_reprovadas, caixas_fechadas, caixa_atual):
     """
