@@ -50,13 +50,7 @@ Se qualquer critério não for atendido, a peça é **reprovada** e o motivo é 
 3. **Execute o programa** com o comando:
 
    ```bash
-   python sistema_pecas.py
-   ```
-
-   Ou se você tiver Python 3 instalado:
-
-   ```bash
-   python3 sistema_pecas.py
+   py sistema_pecas.py
    ```
 
 4. **O menu principal será exibido**. Digite o número da opção desejada e pressione Enter.
